@@ -645,7 +645,91 @@ proc seg_writeSliceSegEdgePNG {pathId posList {fnamebase tmp} {pathfn .} } {
   catch {repos_delete -obj $modelImg}
 }
 
+proc seg_writeForCaffe {pathId posList {fnamebase tmp} {pathfn .} {textfile tmp.txt}} {
 
+  set modelImg /tmp/modelImg
+  catch {repos_delete -obj $modelImg}
+  seg_convertModeltoVolume $modelImg
+
+  file mkdir $pathfn
+  set imagedir $pathfn/images
+  set labeldir $pathfn/labels
+  file mkdir $imagedir
+  file mkdir $labeldir
+
+  global gPathPoints
+  set pathPts $gPathPoints($pathId,splinePts)
+  global gOptions
+  set ext $gOptions(resliceDims)
+  puts "ext: $ext"
+
+  set fo [open $pathfn/$textfile a]
+  for {set idx 0} {$idx < [llength $posList]} {incr idx 1} {
+
+    set posId [lindex $posList $idx]
+
+    set fnameImgName [file join images "$fnamebase-$pathId-$posId.png"]
+    set fnameLabelName [file join labels "$fnamebase-$pathId-$posId.png"]
+
+    set fnameImg [file join $imagedir "$fnamebase-$pathId-$posId.png"]
+    set fnameLabel [file join $labeldir "$fnamebase-$pathId-$posId.png"]
+
+    set magImg /img/$pathId/$posId/mag
+    set potImg /img/$pathId/$posId/pot
+    set segImg /img/$pathId/$posId/seg
+    set edgeImg /img/$pathId/$posId/edge
+    catch {repos_delete -obj $magImg}
+    catch {repos_delete -obj $segImg}
+    catch {repos_delete -obj $edgeImg}
+    img_getSliceAtPathPoint volume_image $pathPts $posId $ext $magImg $->
+    img_getSliceAtPathPoint $modelImg $pathPts $posId $ext $segImg ->
+
+    catch {comp Delete}
+    vtkImageAppendComponents comp
+    comp AddInputData [repos_exportToVtk -src $magImg]
+    comp AddInputData [repos_exportToVtk -src $magImg]
+    comp AddInputData [repos_exportToVtk -src $magImg]
+    comp Update
+    catch {repos_delete -obj $magImg}
+    repos_importVtkImg -src [comp GetOutput] -dst $magImg
+
+    catch {thrshSeg Delete}
+    vtkImageThreshold thrshSeg
+    thrshSeg SetInputData [repos_exportToVtk -src $segImg]
+    thrshSeg ThresholdByLower 0
+    thrshSeg SetInValue 0
+    thrshSeg SetOutValue 255
+    thrshSeg ReplaceOutOn
+    thrshSeg ReplaceInOn
+    thrshSeg Update
+
+    catch {repos_delete -obj $segImg}
+    repos_importVtkImg -src [thrshSeg GetOutput] -dst $segImg
+
+    catch {stat Delete}
+    vtkImageHistogramStatistics stat
+    stat SetInputData [repos_exportToVtk -src $segImg]
+    stat GenerateHistogramImageOff
+    stat Update
+  
+ 
+    set min [stat GetMinimum]
+    set max [stat GetMaximum]
+    if { $min != $max} {
+
+      seg_writePNG $magImg $fnameImg
+      seg_writePNG $segImg $fnameLabel 1
+
+      puts $fo "\$CAFFEEXPORTDIR/$fnameImgName \$CAFFEEXPORTDIR/$fnameLabelName"
+      
+    } else {
+      puts "skipping pathid: $pathId: $posId min/max: $min $max"
+    }
+
+  }
+  close $fo
+  catch {repos_delete -obj $modelImg}
+}
 proc seg_writePNG {img filename {usestat 0} } {
         
   set directory [file path $filename]
