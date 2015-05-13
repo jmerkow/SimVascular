@@ -530,6 +530,15 @@ seg_writeVolumeMha volume_image $imgfn
 #seg_writeAllPathDistanceMap $distfn "$pathIds"
 
 }
+proc seg_writeDistData {imagename segtype pathIds mustr} {
+
+set distfn "$imagename-dist-$segtype$mustr.mha"
+
+puts "distfn $distfn"
+
+seg_writeAllPathDistanceMap $distfn "$pathIds"
+
+}
 
 proc seg_getPDSliceAtPathPoint {{value 0} } {
 
