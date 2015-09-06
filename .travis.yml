@@ -1,0 +1,40 @@
+env:
+  matrix:
+    - WITH_CMAKE=true
+
+language: cpp
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - tcl8.5
+    - tk8.5
+    - tcl8.5-dev
+    - tk8.5-dev
+    - tcllib
+    - tklib
+    - gfortran
+    - mpich2
+    sources:
+    - kubuntu-backports
+
+compiler: gcc
+
+git:
+  submodules: false
+
+before_install:
+  - export NUM_THREADS=4
+  - export SCRIPTS=./travis
+  - export BUILD_DIR=./build
+  # - sudo add-apt-repository ppa:trusty/main -y
+  # - sudo apt-get update -qq
+  # - apt-cache policy cmake 
+  - sudo apt-get install -qq mpich2
+
+before_script:
+  #- if ! $WITH_CMAKE; then $ fi
+
+script: $SCRIPTS/travis_build_and_test.sh
+
