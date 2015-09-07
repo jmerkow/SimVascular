@@ -1,6 +1,6 @@
 env:
   matrix:
-    - WITH_CMAKE=true
+    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=1
 
 language: cpp
 
@@ -13,9 +13,7 @@ addons:
     - tcl8.5-dev
     - tk8.5-dev
     - tcllib
-    - tklib
     - gfortran
-    - mpich2
     sources:
     - kubuntu-backports
 
@@ -25,15 +23,22 @@ git:
   submodules: false
 
 before_install:
-  - export NUM_THREADS=4
-  - export SCRIPTS=./travis
-  - export BUILD_DIR=./build
-  # - sudo add-apt-repository ppa:trusty/main -y
-  # - sudo apt-get update -qq
-  # - apt-cache policy cmake 
-  - sudo apt-get install -qq mpich2
+  - export NUM_THREADS=2
+  - export cwd=$(pwd)
+  - export SCRIPTS=$(pwd)/travis
+  - export EXTERNALS_DIR=$HOME/external/
+  - export VTK_SOURCE_DIR=$EXTERNALS_DIR/vtk-6.0
+  - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
+  - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
+  - export ITK_DIR=$EXTERNALS_DIR/itk-4.5-build
+  - sudo apt-get install -qq mpich2 tklib
 
+cache:
+  apt: true
+  directories:
+  - $EXTERNALS_DIR
 before_script:
+  - $SCRIPTS/travis_build_vtk_itk.sh
   #- if ! $WITH_CMAKE; then $ fi
 
 script: $SCRIPTS/travis_build_and_test.sh
