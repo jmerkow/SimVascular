@@ -15,7 +15,7 @@ if $WITH_CMAKE; then
         CMAKE_BUILD_ARGS="$CMAKE_BUILD_ARGS -DBUILD_ThreeDSolver=1 -DSimVascular_USE_DUMMY_MPICH2"
     fi
 
-  echo $CMAKE_BUILD_ARGS
+  echo $CMAKE_BUILD_ARGS: $CMAKE_BUILD_ARGS
   cmake $CMAKE_BUILD_ARGS ../Code
   $MAKE  
   $MAKE clean
