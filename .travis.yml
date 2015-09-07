@@ -32,7 +32,7 @@ before_install:
   - export NUM_THREADS=4
   - export cwd=$(pwd)
   - export SCRIPTS=$cwd/travis
-  - export EXTERNALS_DIR=$cwd/../external
+  - export EXTERNALS_DIR=$HOME/external
   - export VTK_SOURCE_DIR=$EXTERNALS_DIR/vtk-6.0
   - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
   - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
