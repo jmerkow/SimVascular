@@ -41,7 +41,6 @@ before_install:
   # - sudo apt-get install -qq mpich2 tklib
 
 cache:
-  apt: true
   directories:
   - /home/travis/external/vtk-6.0
   - /home/travis/external/vtk-6.0-build
