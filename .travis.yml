@@ -31,12 +31,14 @@ before_install:
   - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
   - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
   - export ITK_DIR=$EXTERNALS_DIR/itk-4.5-build
+  - export BUILD_DIR=$cwd/build
   - sudo apt-get install -qq mpich2 tklib
 
 cache:
   apt: true
   directories:
   - $EXTERNALS_DIR
+
 before_script:
   - $SCRIPTS/travis_build_vtk_itk.sh
   #- if ! $WITH_CMAKE; then $ fi
