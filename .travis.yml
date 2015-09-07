@@ -32,7 +32,7 @@ before_install:
   - export NUM_THREADS=4
   - export cwd=$(pwd)
   - export SCRIPTS=$cwd/travis
-  - export EXTERNALS_DIR=$HOME/external
+  - export EXTERNALS_DIR=/home/travis/external
   - export VTK_SOURCE_DIR=$EXTERNALS_DIR/vtk-6.0
   - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
   - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
@@ -43,7 +43,10 @@ before_install:
 cache:
   apt: true
   directories:
-  - $EXTERNALS_DIR
+  - /home/travis/external/vtk-6.0
+  - /home/travis/external/vtk-6.0-build
+  - /home/travis/external/itk-4.5
+  - /home/travis/external/itk-4.5-build
 
 before_script:
   - $SCRIPTS/travis_build_vtk.sh
