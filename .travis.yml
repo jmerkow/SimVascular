@@ -1,8 +1,11 @@
 env:
   matrix:
-    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true
-    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false
+      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=false
+      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true BUILD_SOLVER=false
+    # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=false
+    # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true
 
+sudo: false
 language: cpp
 
 addons:
@@ -26,14 +29,14 @@ git:
 before_install:
   - export NUM_THREADS=2
   - export cwd=$(pwd)
-  - export SCRIPTS=$(pwd)/travis
-  - export EXTERNALS_DIR=$HOME/external/
+  - export SCRIPTS=$cwd/travis
+  - export EXTERNALS_DIR=$cwd/external/
   - export VTK_SOURCE_DIR=$EXTERNALS_DIR/vtk-6.0
   - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
   - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
   - export ITK_DIR=$EXTERNALS_DIR/itk-4.5-build
   - export BUILD_DIR=$cwd/build
-  - sudo apt-get install -qq mpich2 tklib
+  # - sudo apt-get install -qq mpich2 tklib
 
 cache:
   apt: true
