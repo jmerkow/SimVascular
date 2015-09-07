@@ -1,7 +1,7 @@
 env:
   matrix:
-    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=1
-    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=0
+    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true
+    - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false
 
 language: cpp
 
