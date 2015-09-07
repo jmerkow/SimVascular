@@ -40,7 +40,8 @@ cache:
   - $EXTERNALS_DIR
 
 before_script:
-  - $SCRIPTS/travis_build_vtk_itk.sh
+  - $SCRIPTS/travis_build_vtk.sh
+  - $SCRIPTS/travis_build_itk.sh
   #- if ! $WITH_CMAKE; then $ fi
 
 script: $SCRIPTS/travis_build_and_test.sh
