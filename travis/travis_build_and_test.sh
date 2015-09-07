@@ -16,7 +16,7 @@ if $WITH_CMAKE; then
     fi
 
   echo $CMAKE_BUILD_ARGS
-  cmake  ../Code
+  cmake $CMAKE_BUILD_ARGS ../Code
   $MAKE  
   $MAKE clean
   cd -
