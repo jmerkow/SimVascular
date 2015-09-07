@@ -2,7 +2,10 @@
 
 set -e
 MAKE="make --jobs=$NUM_THREADS --keep-going"
-exit 0
+if $PREBUILD_ITKVTK
+    # lets try just exiting 0 to make the cache?
+    exit 0
+fi
 
 if $WITH_CMAKE; then
   mkdir -p $BUILD_DIR
