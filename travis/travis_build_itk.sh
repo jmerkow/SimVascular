@@ -13,7 +13,7 @@ if $PREBUILD_ITKVTK; then
         cmake -DModule_ITKVtkGlue=1 -DVTK_DIR=$VTK_DIR \
               -DModule_ITKReview=1 -DBUILD_SHARED_LIBS=0 \
               -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 $ITK_SOURCE_DIR
-        make --jobs=1
+        make --jobs=2
         cd -
     fi
 fi

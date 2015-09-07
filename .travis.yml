@@ -2,7 +2,7 @@ env:
   matrix:
       - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true BUILD_SOLVER=false
       - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true BUILD_SOLVER=true
-      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=true
+    # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=true
     # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=false
     # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true
 
@@ -12,6 +12,7 @@ language: cpp
 addons:
   apt:
     packages:
+    - curl
     - cmake
     - tcl8.5
     - tk8.5
@@ -28,10 +29,10 @@ git:
   submodules: false
 
 before_install:
-  - export NUM_THREADS=2
+  - export NUM_THREADS=4
   - export cwd=$(pwd)
   - export SCRIPTS=$cwd/travis
-  - export EXTERNALS_DIR=$cwd/external/
+  - export EXTERNALS_DIR=$cwd/../external
   - export VTK_SOURCE_DIR=$EXTERNALS_DIR/vtk-6.0
   - export VTK_DIR=$EXTERNALS_DIR/vtk-6.0-build
   - export ITK_SOURCE_DIR=$EXTERNALS_DIR/itk-4.5
@@ -42,11 +43,12 @@ before_install:
 cache:
   apt: true
   directories:
-  - $EXTERNALS_DIR
+  - $cwd/external
 
 before_script:
   - $SCRIPTS/travis_build_vtk.sh
   - $SCRIPTS/travis_build_itk.sh
+  - $SCRIPTS/travis_before_script_cleanup.sh
   #- if ! $WITH_CMAKE; then $ fi
 
 script: $SCRIPTS/travis_build_and_test.sh
