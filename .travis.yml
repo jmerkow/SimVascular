@@ -23,7 +23,7 @@ git:
   submodules: false
 
 before_install:
-  - export NUM_THREADS=3
+  - export NUM_THREADS=2
   - export cwd=$(pwd)
   - export SCRIPTS=$(pwd)/travis
   - export EXTERNALS_DIR=$HOME/external/

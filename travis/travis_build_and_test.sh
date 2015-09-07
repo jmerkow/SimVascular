@@ -2,7 +2,7 @@
 
 set -e
 MAKE="make --jobs=$NUM_THREADS --keep-going"
-
+exit 0
 
 if $WITH_CMAKE; then
   mkdir -p $BUILD_DIR
