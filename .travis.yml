@@ -43,7 +43,7 @@ before_install:
 cache:
   apt: true
   directories:
-  - $cwd/external
+  - $EXTERNALS_DIR
 
 before_script:
   - $SCRIPTS/travis_build_vtk.sh
