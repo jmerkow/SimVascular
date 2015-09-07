@@ -1,7 +1,8 @@
 env:
   matrix:
-      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=false
       - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true BUILD_SOLVER=false
+      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true BUILD_SOLVER=true
+      - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=true
     # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=false BUILD_SOLVER=false
     # - WITH_CMAKE=true VTK60=true ITK45=true PREBUILD_ITKVTK=true
 
@@ -27,7 +28,7 @@ git:
   submodules: false
 
 before_install:
-  - export NUM_THREADS=2
+  - export NUM_THREADS=4
   - export cwd=$(pwd)
   - export SCRIPTS=$cwd/travis
   - export EXTERNALS_DIR=$cwd/external/
