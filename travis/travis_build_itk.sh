@@ -2,7 +2,6 @@
 
 set -e
 MAKE="make --jobs=$NUM_THREADS --keep-going"
-VTK_VERSION=6.0 ITK_VERSION=4.5
 if $PREBUILD_ITKVTK; then
     if [ "$ITK_VERSION" == "4.5" ]; then
         itk_repo_str=" --branch v4.5.0 https://github.com/SimVascular/ITK.git "
