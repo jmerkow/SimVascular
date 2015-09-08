@@ -7,9 +7,10 @@ if $PREBUILD_ITKVTK; then
     if $ITK450; then
         if [ -d $ITK_SOURCE_DIR ]; then
             echo $ITK_SOURCE_DIR exists
-        if [ ! -f $ITK_SOURCE_DIR/CMakeLists.txt ]; then
-            echo $ITK_SOURCE_DIR does not contain CMakeList.txt
-            rm -rf $ITK_SOURCE_DIR
+            if [ ! -f $ITK_SOURCE_DIR/CMakeLists.txt ]; then
+                echo $ITK_SOURCE_DIR does not contain CMakeList.txt
+                rm -rf $ITK_SOURCE_DIR
+            fi
         fi
         if [ ! -d $ITK_SOURCE_DIR ]; then
             git clone --branch v4.5.0 https://github.com/SimVascular/ITK.git $ITK_SOURCE_DIR
