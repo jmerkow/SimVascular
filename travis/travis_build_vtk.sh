@@ -5,8 +5,12 @@ MAKE="make --jobs=$NUM_THREADS --keep-going"
 
 if $PREBUILD_ITKVTK; then
     if $VTK60; then
-        if [ ! -f $VTK_SOURCE_DIR/CMakeLists.txt ]; then
-            rm -rf $VTK_SOURCE_DIR
+        if [ -d $VTK_SOURCE_DIR ]; then
+            echo $VTK_SOURCE_DIR exists
+            if [ ! -f $VTK_SOURCE_DIR/CMakeLists.txt ]; then
+                echo $VTK_SOURCE_DIR does not contain CMakeList.txt
+                rm -rf $VTK_SOURCE_DIR
+            fi
         fi
         if [ ! -d "$VTK_SOURCE_DIR" ]; then
             git clone --branch v6.0.0 https://github.com/Kitware/VTK.git $VTK_SOURCE_DIR
