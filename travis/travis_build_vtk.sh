@@ -7,11 +7,11 @@ if $PREBUILD_ITKVTK; then
     cmake_arg_str=""
     vtk_repo_str=""
     if [ "$VTK_VERSION" == "6.0" ]; then
-        vtk_repo_str="--branch v6.0.0 https://github.com/SimVascular/VTK.git"
+        vtk_repo_str=" --branch v6.0.0 https://github.com/SimVascular/VTK.git "
         cmake_arg_str=" -DVTK_WRAP_TCL=1 -DVTK_Group_Tk=1 -DBUILD_SHARED_LIBS=0 -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 "
     elif [ "$VTK_VERSION" == "6.2" ]; then
-        vtk_repo_str="--branch simvascular-patch-6.2 https://github.com/SimVascular/VTK.git"
-        cmake_arg_str="-DBUILD_EXAMPLES=0 -DVTK_WRAP_TCL=1 -DBUILD_SHARED_LIBS=0 -DVTK_GROUP_IMAGING=1 -DVTK_GROUP_TK=1"
+        vtk_repo_str=" --branch simvascular-patch-6.2 https://github.com/SimVascular/VTK.git "
+        cmake_arg_str=" -DBUILD_EXAMPLES=0 -DVTK_WRAP_TCL=1 -DBUILD_SHARED_LIBS=0 -DVTK_GROUP_IMAGING=1 -DVTK_GROUP_TK=1 "
     fi
     if [ -d $VTK_SOURCE_DIR ]; then
         echo $VTK_SOURCE_DIR exists

@@ -5,11 +5,11 @@ MAKE="make --jobs=$NUM_THREADS --keep-going"
 VTK_VERSION=6.0 ITK_VERSION=4.5
 if $PREBUILD_ITKVTK; then
     if [ "$ITK_VERSION" == "4.5" ]; then
-        itk_repo_str="--branch v4.5.0 https://github.com/SimVascular/ITK.git"
-        cmake_arg_str="-DModule_ITKVtkGlue=1 -DVTK_DIR=$VTK_DIR -DBUILD_SHARED_LIBS=0 -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 "
+        itk_repo_str=" --branch v4.5.0 https://github.com/SimVascular/ITK.git "
+        cmake_arg_str=" -DModule_ITKVtkGlue=1 -DVTK_DIR=$VTK_DIR -DBUILD_SHARED_LIBS=0 -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 "
     elif [ "$ITK_VERSION" == "4.8" ]; then
-        itk_repo_str="--branch v4.8.0 https://github.com/SimVascular/ITK.git"
-        cmake_arg_str="-DModule_ITKVtkGlue=1 -DVTK_DIR=$VTK_DIR -DBUILD_SHARED_LIBS=0 -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 "
+        itk_repo_str=" --branch v4.8.0 https://github.com/SimVascular/ITK.git "
+        cmake_arg_str=" -DModule_ITKVtkGlue=1 -DVTK_DIR=$VTK_DIR -DBUILD_SHARED_LIBS=0 -DBUILD_TESTING=0 -DBUILD_EXAMPLES=0 "
     fi
 
     if [ -d $ITK_SOURCE_DIR ]; then
@@ -20,7 +20,7 @@ if $PREBUILD_ITKVTK; then
         fi
     fi
     if [ ! -d $ITK_SOURCE_DIR ]; then
-        git clone itk_repo_str $ITK_SOURCE_DIR
+        git clone $itk_repo_str $ITK_SOURCE_DIR
     fi
     mkdir -p $ITK_DIR
     cd $ITK_DIR
