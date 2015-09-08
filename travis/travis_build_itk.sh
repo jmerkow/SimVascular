@@ -5,7 +5,10 @@ MAKE="make --jobs=$NUM_THREADS --keep-going"
 
 if $PREBUILD_ITKVTK; then
     if $ITK450; then
-        if [ ! -d "$ITK_SOURCE_DIR" ]; then
+        if [ ! -f $ITK_SOURCE_DIR/CMakeLists.txt ]; then
+            rm -rf $ITK_SOURCE_DIR
+        fi
+        if [ ! -d $ITK_SOURCE_DIR ]; then
             git clone --branch v4.5.0 https://github.com/SimVascular/ITK.git $ITK_SOURCE_DIR
         fi
         mkdir -p $ITK_DIR
