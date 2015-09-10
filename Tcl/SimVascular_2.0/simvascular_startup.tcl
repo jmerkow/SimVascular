@@ -446,7 +446,7 @@ if {[lsearch -exact $envnames SIMVASCULAR_BATCH_MODE] < 0} {
 
   after 5000 {set tkcon_delay_done 1}
   vwait tkcon_delay_done
-  guiCV_display_windows 3d_only
+  #guiCV_display_windows 3d_only
 
   set topbottom $symbolicName(main_top_bottom_right_panedwindow)
   set leftright $symbolicName(main_left_right_panedwindow)
