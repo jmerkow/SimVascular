@@ -1,9 +1,12 @@
 
 include( CTest )
 include(${CMAKE_CURRENT_SOURCE_DIR}/SimVascularTestMacros.cmake)
+
+option(SimVascular_RUN_GUI_TESTS "Option to run GUI testing when performing test" ON)
 set(SimVascular_TEST_DIR "" CACHE PATH "Path to SimVascular automated test files")
 set(SimVascular_TEST_SAVEOUT_DIR "${OUTBIN_DIR}/Testing/" CACHE PATH "Path to SimVascular automated test files" FORCE)
 mark_as_superbuild(SimVascular_TEST_DIR)
+mark_as_superbuild(SimVascular_RUN_GUI_TESTS)
 
 #TODO: Change this!
 if(UNIX)
@@ -30,8 +33,9 @@ if(SimVascular_DEV_OUTPUT)
   print_vars(_VARLIST)
 endif()
 
-add_test_return(StartUpTest ${SimVascular_TEST_EXE} "${SimVascular_TEST_DIR}/startup/startup.tcl" )
-
+if(SimVascular_RUN_GUI_TESTS)
+  add_test_return(StartUpTest ${SimVascular_TEST_EXE} "${SimVascular_TEST_DIR}/startup/startup.tcl" )
+endif()
 add_test(NAME SolverSimpleTest
   COMMAND ${MPIEXEC} -n 1 ${SimVascular_HOME}/Bin/${FLOWSOLVER_EXE}
   WORKING_DIRECTORY ${SimVascular_TEST_DIR}/solver_basic)
