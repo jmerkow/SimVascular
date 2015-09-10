@@ -46269,7 +46269,7 @@ proc mainGUI {} {
   global symbolicName
   global guiTRIMvars
   global gRen3d
-  set gRen3d [vis_gRenWin_3D]
+  # set gRen3d [vis_gRenWin_3D]
 
   set tbox $symbolicName(guiTRIMcutFileTB)
   $tbox delete 1.0 end
