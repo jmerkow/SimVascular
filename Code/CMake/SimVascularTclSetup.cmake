@@ -49,6 +49,14 @@ macro(tcl_cmd)
 	endif()
 endmacro()
 
+option(SimVascular_No_Render_Window "Do not start render windows when simvascular starts, usefull for headless mode" OFF)
+mark_as_superbuild(SimVascular_No_Render_Window)
+if(SimVascular_No_Render_Window)
+	set(SIMVASCULAR_NO_RENDERER 1)
+else()
+	set(SIMVASCULAR_NO_RENDERER 0)
+endif()
+
 if(NOT SimVascular_SUPERBUILD)
 	set(TCL_CONFIG_FILES)
 	tcl_cmd(CODE "puts \"[clock seconds]\""
