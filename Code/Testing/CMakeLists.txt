@@ -39,7 +39,7 @@ if(SimVascular_RUN_GUI_TESTS)
   add_test_return(StartUpTest ${SimVascular_TEST_EXE} "${SimVascular_TEST_DIR}/startup/startup.tcl" )
 endif()
 
-if(NOT SimVascular_USE_DUMMY_MPICH2 OR NOT MPIEXEC)
+if(NOT SimVascular_USE_DUMMY_MPICH2 AND MPIEXEC)
   set(solver_cmd "${MPIEXEC} -n 1 ${SOLVER_TEST_EXE}")
 else()
   set(solver_cmd "${SOLVER_TEST_EXE}")
