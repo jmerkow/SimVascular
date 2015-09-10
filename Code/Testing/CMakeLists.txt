@@ -12,10 +12,12 @@ mark_as_superbuild(SimVascular_RUN_GUI_TESTS)
 if(UNIX)
   set(SimVascular_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mysim")
   set(POSTSOLVER_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mypost")
+  set(SOLVER_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mysolver")
 endif()
 if(WIN32)
   set(SimVascular_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mysim.bat")
   set(POSTSOLVER_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mypost.bat")
+  set(SOLVER_TEST_EXE "${SIMVASCULAR_DEVELOPER_SCRIPT_DIR}/mysolver.bat")
 endif()
 file(TO_NATIVE_PATH "${FLOWSOLVER_CONFIG_PATH}" FLOWSOLVER_CONFIG_NATIVE_PATH)
 if(SimVascular_DEV_OUTPUT)
@@ -36,8 +38,14 @@ endif()
 if(SimVascular_RUN_GUI_TESTS)
   add_test_return(StartUpTest ${SimVascular_TEST_EXE} "${SimVascular_TEST_DIR}/startup/startup.tcl" )
 endif()
+
+if(NOT SimVascular_USE_DUMMY_MPICH2)
+  set(solver_cmd "${MPIEXEC} -n 1 ${SOLVER_TEST_EXE}")
+else()
+  set(solver_cmd "${SOLVER_TEST_EXE}")
+endif()
 add_test(NAME SolverSimpleTest
-  COMMAND ${MPIEXEC} -n 1 ${SimVascular_HOME}/Bin/${FLOWSOLVER_EXE}
+  COMMAND  ${solver_cmd}
   WORKING_DIRECTORY ${SimVascular_TEST_DIR}/solver_basic)
 set_tests_properties(SolverSimpleTest
     PROPERTIES ENVIRONMENT FLOWSOLVER_CONFIG=${FLOWSOLVER_CONFIG_NATIVE_PATH})
