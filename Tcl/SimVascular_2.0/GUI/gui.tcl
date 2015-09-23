@@ -741,7 +741,7 @@ proc ShowWindow.guiCV { args} {
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.frame38.button4
   #ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.frame38.button4  -command {seg_extractParasolidStuff}  -text {Extract Seg Data}
-  ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.frame38.button4  -command {guiSV_group_make_isosurface_3D_surface}  -text {Send Isosurface to 3D Surface}
+  ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.frame38.button4  -command {seg_writeDistMap}  -text {Sseg_writeDistMap}
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.label47
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame43.frame44.label47  -font {Helvetica 10}  -text {Visualization Options}
 

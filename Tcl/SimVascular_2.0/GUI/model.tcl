@@ -729,7 +729,7 @@ proc guiSV_model_load_model { {fn "" } } {
   set gFilenames($inputName) $fn
   if {$kernel == "Parasolid"} {
     guiSV_model_add_faces_to_tree $kernel $inputName 
-    set withFaces 1
+    set withFaces 0
   }
   # if discrete model, try and load faces file or create defaults
   if {$kernel == "Discrete"} {

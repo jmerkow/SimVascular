@@ -145,6 +145,8 @@ proc seg_writeAllPathDistanceMap { {fnamebase temp} {pathIds -1} } {
 	global gPathPoints
 	global symbolicName
 	global gRen3d
+  set path_summary [file rootname $fnamebase]
+  set path_summary $path_summary-paths_used.txt
 
 	if {$pathIds == "-1" } {
 		# find the current list of paths to choose from
@@ -155,6 +157,11 @@ proc seg_writeAllPathDistanceMap { {fnamebase temp} {pathIds -1} } {
 			lappend pathIds [lindex $busted 0]
 		}
 	}
+
+  set fp [open $path_summary w]
+  puts $fp $pathIds
+  puts $pathIds
+  close $fp
 	vtkAppendPolyData vtkapd
 	vtkCleanPolyData vtkcleaner
 	vtkImplicitModeller imp
@@ -179,6 +186,7 @@ proc seg_writeAllPathDistanceMap { {fnamebase temp} {pathIds -1} } {
 		}
 
 		puts "Appending path with id: $id"
+
 		path_MakePolyData $splinePts $splinePd
 		repos_setLabel -obj $splinePd -key color -value white
 		gdscGeneralView $gRen3d $splinePd
@@ -495,6 +503,24 @@ proc seg_PrintSelectedGroups {} {
 		}
 	}
 	puts "$selected_groups"
+}
+
+proc seg_writeDistMap { {pathIds -1} } {
+
+global gFilenames
+set segfn_base $gFilenames(generic_solid_file)
+if {$segfn_base == ""} return
+set seg_basename [file rootname $segfn_base]
+
+set distfn $seg_basename-dist0.mha
+set path_txt $seg_basename-used_paths.txt
+puts $distfn
+
+
+seg_writeAllPathDistanceMap $distfn "$pathIds"
+
+mainGUIexit 1
+
 }
 
 proc seg_writeSegData { {pathIds -1} } {
@@ -1050,19 +1076,23 @@ proc seg_LoadAll {imgfn pathfn modelfn} {
   if {[file extension $imgfn] == ".mha"} {
       set gImageVol(mha_filename) "$imgfn"
   }
-  createPREOPloadsaveLoadVol 
+  catch { createPREOPloadsaveLoadVol }
 
   ## Load Model
   if {$modelfn == ""} return
-  guiSV_model_load_model "$modelfn"
+  global gOptions
+  set gOptions(opacity_for_model) .67
+
+  catch { guiSV_model_load_model "$modelfn" }
 
   ## Load paths
 
   if {$pathfn == ""} return
   global gFilenames
   set gFilenames(path_file) "$pathfn"
-  guiFNMloadHandPaths
+  catch {guiFNMloadHandPaths}
   after 100
+  seg_ShowSplines
 
   #seg_extractParasolidStuff
   #mainGUIexit 1
