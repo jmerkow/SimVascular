@@ -46456,7 +46456,11 @@ proc lsGUIupdatePositionScale { {value "0"}} {
   # the volume data set
   #global gImageFoo
   #set src $gImageFoo(conv)
-  set src volume_image
+  # segmentation slice code
+
+
+
+
 
   # get the image slice
   set rtnImg /tmp/lsGUI/mag
@@ -46464,6 +46468,59 @@ proc lsGUIupdatePositionScale { {value "0"}} {
 
   catch {repos_delete -obj $rtnImg}
   catch {repos_delete -obj $rtnPot}
+  catch {repos_delete -obj junk}
+
+
+  global itklsGUIParams
+#itklsGUIParams(useEdgeImage)
+if {  ![info exists itklsGUIParams(ShowEdgeImage)] } {
+  set itklsGUIParams(ShowEdgeImage) 0 
+}
+
+
+  if { [info exists itklsGUIParams(edgeImage)] } { 
+    
+
+    if { $itklsGUIParams(ShowEdgeImage) == "1"} {
+      set src $itklsGUIParams(edgeImage)
+      set rtnPot /tmp/lsGUI/pot
+      img_getSliceAtPathPoint $src $path $posId $ext $rtnPot ->
+      set rtnPot ->
+
+    } elseif { $itklsGUIParams(ShowEdgeImage) == "distance" } {
+
+      set src $itklsGUIParams(edgeImage)
+      set inpImg /img/$pathId/$posId/user
+      set distImg $rtnPot
+
+      catch {repos_delete -obj $inpImg}
+      catch {repos_delete -obj $distImg}
+
+      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+      itkutils_DistanceImage -src $inpImg -dst $distImg -thres $itklsGUIParams(gSigma1)
+      set rtnPot ->
+    } elseif { $itklsGUIParams(ShowEdgeImage) == "thres" } {
+
+      set src $itklsGUIParams(edgeImage)
+      set inpImg /img/$pathId/$posId/user
+      set potImg $rtnPot
+
+      catch {repos_delete -obj $inpImg}
+      catch {repos_delete -obj $potImg}
+
+      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+      itkutils_ThresholdImage -src $inpImg -dst $potImg -thres $itklsGUIParams(gSigma1)
+      set rtnPot ->
+
+      
+    }
+
+
+   }
+
+  set src volume_image
+  catch {repos_delete -obj $rtnImg}
+  catch {repos_delete -obj junk}
 
   img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
 

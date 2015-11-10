@@ -50,7 +50,7 @@ proc itklsDo { value} {
 	itklsChangeFrame 0
 }
 proc itklsChangeFrame { value } {
-
+	puts "itkchange"
 	global lsGUImagWindow
 	global lsGUIpotWindow
 	global gOptions
@@ -254,9 +254,23 @@ proc itkLSStg1 { } {
 		set inImg $magImg
 		$itklset SetUseInputImageAsFeature -input 0
 		puts "normal segmenation"
+
+	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
+
+		  set src $itklsGUIParams(edgeImage)
+		  set inpImg /img/$pathId/$posId/user
+		  set distImg /img/$pathId/$posId/dist
+
+		  catch {repos_delete -obj $inpImg}
+		  catch {repos_delete -obj $distImg}
+
+		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+		  set inImg $inpImg
+		  $itklset SetUseInputImageAsFeature -input 1
+		  puts "using norm edge image!"
 	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
 
-			set src $itklsGUIParams(edgeImage)
+		  set src $itklsGUIParams(edgeImage)
 		  set inpImg /img/$pathId/$posId/user
 		  set distImg /img/$pathId/$posId/dist
 
@@ -267,8 +281,8 @@ proc itkLSStg1 { } {
 		  itkutils_DistanceImage -src $inpImg -dst $distImg -thres $gSigma1
 		  
 		  set inImg $distImg
-			$itklset SetUseInputImageAsFeature -input 1
-			puts "using edge image!"
+		  $itklset SetUseInputImageAsFeature -input 1
+		  puts "using dist edge image!"
 	}
 	set lsres_unclean /lsGUI/$pathId/$posId/ls/unclean
 
@@ -328,9 +342,10 @@ proc itkLSStg2 { } {
 		set inImg $magImg
 		$itklset SetUseInputImageAsFeature -input 0
 		puts "normal segmenation"
-	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
 
-			set src $itklsGUIParams(edgeImage)
+	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
+
+		  set src $itklsGUIParams(edgeImage)
 		  set inpImg /img/$pathId/$posId/user
 		  set distImg /img/$pathId/$posId/dist
 
@@ -338,11 +353,24 @@ proc itkLSStg2 { } {
 		  catch {repos_delete -obj $distImg}
 
 		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-		  itkutils_DistanceImage -src $inpImg -dst $distImg -thres $gSigma2
+		  set inImg $inpImg
+		  $itklset SetUseInputImageAsFeature -input 1
+		  puts "using norm edge image!"
+	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
+
+		  set src $itklsGUIParams(edgeImage)
+		  set inpImg /img/$pathId/$posId/user
+		  set distImg /img/$pathId/$posId/dist
+
+		  catch {repos_delete -obj $inpImg}
+		  catch {repos_delete -obj $distImg}
+
+		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+		  itkutils_DistanceImage -src $inpImg -dst $distImg -thres $gSigma1
 		  
 		  set inImg $distImg
-			$itklset SetUseInputImageAsFeature -input 1
-			puts "using edge image!"
+		  $itklset SetUseInputImageAsFeature -input 1
+		  puts "using dist edge image!"
 	}
 
 	set lsres_unclean /lsGUI/$pathId/$posId/ls/unclean
