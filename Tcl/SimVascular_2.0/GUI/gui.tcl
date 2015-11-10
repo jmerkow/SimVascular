@@ -3333,6 +3333,12 @@ img_guessVolParams $gImageVol(filename)}
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry41
   ttk::entry .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry41  -font {Helvetica 10}  -textvariable {lsGUIlsParams(MagFactor)}  -width {10}
 
+  ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.label290  -font {Helvetica 10}  -borderwidth {0}  -text {Slice Dims}  -width {20}
+
+  # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry41
+  ttk::entry .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry410  -font {Helvetica 10}  -textvariable {gOptions(resliceDims)}  -width {10}
+
+
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame8
   ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame8  -width {589}  -height {25}
 
@@ -14965,6 +14971,9 @@ img_guessVolParams $gImageVol(filename)}
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.label29  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry41  -expand 1  -fill both  -side left
+
+    pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.label290  -fill both  -side left
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame37.entry410  -expand 1  -fill both  -side left
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame8
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64.frame8.label16  -fill both  -side left
