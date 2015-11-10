@@ -250,13 +250,14 @@ proc itkLSStg1 { } {
 	catch {repos_delete -obj $magImg}
 	img_getSliceAtPathPoint $src $path $posId $ext $magImg ->
 
+
 	if { $itklsGUIParams(useEdgeImage) == "0"} {
 		set inImg $magImg
 		$itklset SetUseInputImageAsFeature -input 0
 		puts "normal segmenation"
 
 	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
-
+			puts "using norm edge image!"
 		  set src $itklsGUIParams(edgeImage)
 		  set inpImg /img/$pathId/$posId/user
 		  set distImg /img/$pathId/$posId/dist
@@ -268,6 +269,7 @@ proc itkLSStg1 { } {
 		  set inImg $inpImg
 		  $itklset SetUseInputImageAsFeature -input 1
 		  puts "using norm edge image!"
+
 	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
 
 		  set src $itklsGUIParams(edgeImage)
