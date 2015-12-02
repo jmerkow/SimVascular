@@ -176,7 +176,7 @@ void itkGenerateFeatureImageNoGrad(TImageType* itkInputImage,
 	  typedef typename itk::StatisticsImageFilter<TImageType> StatisticsImageFilterType;
 
 
-	  StatisticsImageFilterType::Pointer statisticsImageFilter = StatisticsImageFilterType::New ();
+	  typename StatisticsImageFilterType::Pointer statisticsImageFilter = StatisticsImageFilterType::New ();
 	  statisticsImageFilter->SetInput(itkInputImage);
 	  statisticsImageFilter->Update();
 	 std::cout << "Before Rescale";
