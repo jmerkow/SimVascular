@@ -255,6 +255,13 @@ proc itkLSStg1 { } {
 		set inImg $magImg
 		$itklset SetUseInputImageAsFeature -input 0
 		puts "normal segmenation"
+	} elseif { $itklsGUIParams(useEdgeImage) == "disp"} {
+
+		# set itklsGUIParams(useEdgeImage) "disp"
+		lsGUIupdatePositionScale 
+		set inImg /tmp/lsGUI/pot
+		$itklset SetUseInputImageAsFeature -input 1
+
 
 	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
 		puts "using norm edge image!"
@@ -288,8 +295,7 @@ proc itkLSStg1 { } {
 	}
 	set lsres_unclean /lsGUI/$pathId/$posId/ls/unclean
 
-	lsGUIupdatePositionScale 
-	set $inImg /tmp/lsGUI/pot
+
 
 	set seedPd /tmp/lsGUI/seedPd
 	if {![repos_exists -obj $seedPd] } {
@@ -347,6 +353,14 @@ proc itkLSStg2 { } {
 		set inImg $magImg
 		$itklset SetUseInputImageAsFeature -input 0
 		puts "normal segmenation"
+
+	} elseif { $itklsGUIParams(useEdgeImage) == "disp"} {
+
+		# set itklsGUIParams(useEdgeImage) "disp"
+		lsGUIupdatePositionScale 
+		set inImg /tmp/lsGUI/pot
+		$itklset SetUseInputImageAsFeature -input 1
+
 
 	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
 

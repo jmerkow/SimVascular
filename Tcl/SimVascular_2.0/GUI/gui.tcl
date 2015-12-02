@@ -4273,6 +4273,15 @@ img_guessVolParams $gImageVol(filename)}
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5.frame13.label92
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5.frame13.label92  -font {Helvetica 10}  -borderwidth {0}  -relief {flat}  -text {Stage 2}
 
+  #---------------
+  ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14  -borderwidth {0}  -relief {flat}  -width {316}  -height {22}
+
+  ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.label16  -font {Helvetica 10}  -borderwidth {0}  -relief {flat}  -text {Use Edge}  -width {8}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton13  -variable {itklsGUIParams(useEdgeImage)}  -value {0}  -text {Normal}  -width {11}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton5  -variable {itklsGUIParams(useEdgeImage)}  -value {disp} -text {New}  -width {11}
+
+  #-----------------
+
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe6
   ttk::labelframe .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe6  -text {Batch and Smoothing [-]}  -height {18}
   # bindings
@@ -15440,6 +15449,7 @@ img_guessVolParams $gImageVol(filename)}
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame2  -anchor nw  -fill x
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame12  -anchor nw  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5  -anchor nw  -side left
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14  -anchor nw  -side left
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame2
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame2.label16  -expand 1  -fill both  -side left
@@ -15467,6 +15477,10 @@ img_guessVolParams $gImageVol(filename)}
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5.frame13
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5.frame13.checkbutton83  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame5.frame13.label92  -expand 1  -fill both  -side left
+
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.label16  -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton13  -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton5  -fill x
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe6
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe6.frame13  -anchor nw  -expand 1  -fill x
