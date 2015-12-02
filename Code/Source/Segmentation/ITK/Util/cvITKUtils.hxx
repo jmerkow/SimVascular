@@ -48,6 +48,7 @@
 #include "itkInvertIntensityImageFilter.h"
 #include <itkAbsImageFilter.h>
 #include "itkCastImageFilter.h"
+ #include "itkStatisticsImageFilter.h"
 
 #include "itkBinaryContourImageFilter.h"
 #include "itkBinaryThresholdImageFilter.h"
@@ -169,6 +170,20 @@ void itkGenerateFeatureImageNoGrad(TImageType* itkInputImage,
 {
 	typedef itk::RescaleIntensityImageFilter<TImageType,TImageType>
 	RescaleInputFilterType;
+
+
+
+	  typedef typename itk::StatisticsImageFilter<TImageType> StatisticsImageFilterType;
+
+
+	  StatisticsImageFilterType::Pointer statisticsImageFilter = StatisticsImageFilterType::New ();
+	  statisticsImageFilter->SetInput(itkInputImage);
+	  statisticsImageFilter->Update();
+	 std::cout << "Before Rescale";
+	  std::cout << " Mean: " << statisticsImageFilter->GetMean();
+	  std::cout << " Std.: " << statisticsImageFilter->GetSigma();
+	  std::cout << " Min: " << statisticsImageFilter->GetMinimum();
+	  std::cout << " Max: " << statisticsImageFilter->GetMaximum() << std::endl;
 	try
 	{
 		// do gradient outside of the filter
@@ -213,6 +228,18 @@ void itkGenerateFeatureImageNoGrad(TImageType* itkInputImage,
 	{
 		std::cerr << "Unknown Error!" << std::endl;
 	}
+
+
+		  statisticsImageFilter->SetInput(outImage);
+	  statisticsImageFilter->Update();
+	 std::cout << "After Rescale";
+	  std::cout << " Mean: " << statisticsImageFilter->GetMean();
+	  std::cout << " Std.: " << statisticsImageFilter->GetSigma();
+	  std::cout << " Min: " << statisticsImageFilter->GetMinimum();
+	  std::cout << " Max: " << statisticsImageFilter->GetMaximum() << std::endl;
+
+
+
 }
 
 template <typename TImageType>
