@@ -412,6 +412,18 @@ int cvITKLevelSet::ComputePhaseOneLevelSet(float kc,
 	}
 	try
 	{
+
+	  typedef itk::StatisticsImageFilter<ITKInternalImageType> StatisticsImageFilterType;
+	  StatisticsImageFilterType::Pointer statisticsImageFilter
+	          = StatisticsImageFilterType::New ();
+	  statisticsImageFilter->SetInput(m_itkFeatureImage);
+	  statisticsImageFilter->Update();
+	 
+	  std::cout << "Mean: " << statisticsImageFilter->GetMean();
+	  std::cout << " Std.: " << statisticsImageFilter->GetSigma();
+	  std::cout << " Min: " << statisticsImageFilter->GetMinimum();
+	  std::cout << " Max: " << statisticsImageFilter->GetMaximum() << std::endl;
+
 		levelSetFilter->SetFeatureImage(m_itkFeatureImage);
 		levelSetFilter->SetInitialImage(m_itkSeedImage);
 		levelSetFilter->SetDebug(0);

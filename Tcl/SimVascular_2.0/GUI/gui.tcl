@@ -68,6 +68,8 @@ proc ShowWindow.guiCV { args} {
   .guiCV.tframe2.tmenubutton0.m add command  -command {guiCVloadMha}  -label {Load Image (MetaImage)}
   .guiCV.tframe2.tmenubutton0.m add command  -command {ShowWindow.guiDICOM}  -label {Load Images (DICOM)}
   .guiCV.tframe2.tmenubutton0.m add separator
+  .guiCV.tframe2.tmenubutton0.m add command  -command {guiCVloadMha_Edge}  -label {Load Edge Image}
+  .guiCV.tframe2.tmenubutton0.m add separator
   .guiCV.tframe2.tmenubutton0.m add command  -command {guiPPloadPaths}  -label {Load Paths}
   .guiCV.tframe2.tmenubutton0.m add command  -command {guiPPsavePaths}  -label {Save Paths}
   .guiCV.tframe2.tmenubutton0.m add separator
@@ -674,6 +676,14 @@ proc ShowWindow.guiCV { args} {
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton27
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton27  -variable {guiVIB(color_map)}  -value {native}  -command {volGUIupdateColorMaps guiVIB}  -text {native [0 0]}  -textvariable {guiVIB(nativeRange)}
+
+  ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.label26  -font {Helvetica 10}  -text {Alternate Display}
+  ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26  -width {199}  -height {33}
+  # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton26
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26.radiobutton1  -variable {guiVIB(img_show)}  -value {image}  -command {volGUIUpdateImage}  -text {Image}
+
+  # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton27
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26.radiobutton2  -variable {guiVIB(img_show)}  -value {userEdge}  -command {volGUIUpdateImage}  -text {User Edge Image}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame28
   ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame28  -borderwidth {0}  -relief {flat}  -width {485}  -height {154}
@@ -2987,7 +2997,7 @@ img_guessVolParams $gImageVol(filename)}
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.label0  -font {Helvetica 10}  -borderwidth {0}  -text {blank}  -textvariable {lsGUIcurrentPathLabel}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button1
-  ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button1  -command {lsGUIselectPathSetup}  -text {Select Current Path}  -width {19}
+  ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button1  -command {lsGUIselectPathSetup}  -text {Select Current Path Main}  -width {19}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button2
   ttk::button .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button2  -command {gui_toggle_2d_views}  -text {Toggle 2D Views}  -width {19}
@@ -3006,6 +3016,16 @@ img_guessVolParams $gImageVol(filename)}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17.label23
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17.label23  -font {Helvetica 10}  -borderwidth {0}  -text {000.00 000.00 000.00}  -textvariable {lsGUIpositionIdStr}  -width {20}
+
+    # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17
+  ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18  -width {107}  -height {83}
+
+  # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17.label19
+  ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.label1  -font {Helvetica 10}  -borderwidth {0}  -text {2D Edge Display}  -width {15}
+  ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1 -width {199}  -height {33}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton1  -variable {itklsGUIParams(2DEdgeImage)}  -value {image}  -command {lsGUIupdatePositionScale}  -text {Image}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton3  -variable {itklsGUIParams(2DEdgeImage)}  -value {LSEdge}  -command {lsGUIupdatePositionScale}  -text {LS Edge}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton2  -variable {itklsGUIParams(2DEdgeImage)}  -value {userEdge}  -command {lsGUIupdatePositionScale}  -text {User Edge}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7
   ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7  -width {778}  -height {92}
@@ -4681,10 +4701,10 @@ img_guessVolParams $gImageVol(filename)}
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tlabel1  -font {Helvetica 10}  -relief {flat}  -text {3D Display:}  -width {25}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton0
-  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton0  -variable {gui3Dvars(ls_image_show_option)}  -value {image}  -command {itk3dLS_updateEdgeImage 0}  -text {image}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton0  -variable {guiVIB(img_show)}  -value {image}  -command {itk3dLS_updateEdgeImage 0}  -text {image}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton1
-  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton1  -variable {gui3Dvars(ls_image_show_option)}  -value {edge}  -command {itk3dLS_updateEdgeImage 0}  -text {edge}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe2.tframeDisp.tradiobutton1  -variable {guiVIB(img_show)}  -value {3Dedge}  -command {itk3dLS_updateEdgeImage 0}  -text {edge}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe6
   ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe2.notebook0.tframe6  -borderwidth {0}  -relief {flat}  -width {30}  -height {30}
@@ -13421,6 +13441,11 @@ img_guessVolParams $gImageVol(filename)}
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.label25  -fill both
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24  -expand 1  -fill both
 
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.label26  -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26  -expand 1  -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26.radiobutton1  -expand 1  -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame26.radiobutton2  -expand 1  -fill both
+
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton26  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe1.notebook34.tframe35.frame37.frame30.frame24.radiobutton27  -fill both  -side left
@@ -14606,6 +14631,7 @@ img_guessVolParams $gImageVol(filename)}
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame1  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.label0  -expand 1  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17  -expand 1  -fill both  -side left
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18  -expand 1  -fill both  -side left
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.button1  -fill both  -side left
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame1
@@ -14614,6 +14640,16 @@ img_guessVolParams $gImageVol(filename)}
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17.label19  -expand 1  -fill both
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame17.label23  -expand 1  -fill both
+
+
+  ##--
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.label1  -expand 1  -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1 -expand 1 -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton1 -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton2 -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton3 -fill x
+  ##--
+
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7.label14  -fill both  -side left
@@ -28967,6 +29003,16 @@ proc guiCVloadMha {} {
   if {[string length [string trim $filename]] != 0} {
     set gImageVol(mha_filename) $filename
     createPREOPloadsaveLoadVol
+  }
+}
+
+# Procedure: guiCVloadMha
+proc guiCVloadMha_Edge {} {
+
+  global gImageVol
+  set filename [tk_getOpenFile -filetypes {{MetaImage {*.mha *.mhd}} {"All Files" *.*}} -title "Choose Volumetric Image File In mha Format"]
+  if {[string length [string trim $filename]] != 0} {
+    seg_LoadEdgeImageMha $filename
   }
 }
 
@@ -46184,10 +46230,6 @@ proc lsGUIupdatePositionScale { {value "0"}} {
   #set src $gImageFoo(conv)
   # segmentation slice code
 
-
-
-
-
   # get the image slice
   set rtnImg /tmp/lsGUI/mag
   set rtnPot /tmp/lsGUI/pot
@@ -46196,59 +46238,71 @@ proc lsGUIupdatePositionScale { {value "0"}} {
   catch {repos_delete -obj $rtnPot}
   catch {repos_delete -obj junk}
 
+  #default
+  set src volume_image
+  img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
+
 
   global itklsGUIParams
-#itklsGUIParams(useEdgeImage)
-if {  ![info exists itklsGUIParams(ShowEdgeImage)] } {
-  set itklsGUIParams(ShowEdgeImage) 0 
-}
+  if {  ![info exists itklsGUIParams(2DEdgeImage)] } {
+    set itklsGUIParams(2DEdgeImage) image
+  }
 
 
-  if { [info exists itklsGUIParams(edgeImage)] } { 
+  set need_userEdge [string match userEdge* $itklsGUIParams(2DEdgeImage)]
+  puts $need_userEdge
+
+  if { $need_userEdge &&  [info exists itklsGUIParams(edgeImage)] == 0} {
+
+  } else {
     
-
-    if { $itklsGUIParams(ShowEdgeImage) == "1"} {
+    if { $itklsGUIParams(2DEdgeImage) == "userEdge"} {
       set src $itklsGUIParams(edgeImage)
       set rtnPot /tmp/lsGUI/pot
       img_getSliceAtPathPoint $src $path $posId $ext $rtnPot ->
-      set rtnPot ->
 
-    } elseif { $itklsGUIParams(ShowEdgeImage) == "distance" } {
+    } elseif { $itklsGUIParams(2DEdgeImage) == "LSEdge"} {
+
+      switch -exact $itklsGUIParams(showPot) {
+        Stg1 {
+            catch {repos_delete -obj $rtnPot}
+          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+          -sigma $itklsGUIParams(gSigma1)
+        }
+        Stg2 {
+            catch {repos_delete -obj $rtnPot}
+          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+          -sigma $itklsGUIParams(gSigma2)
+        }
+        Default {
+        }
+      }
+    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeDistance" } {
 
       set src $itklsGUIParams(edgeImage)
       set inpImg /img/$pathId/$posId/user
-      set distImg $rtnPot
+      set rtnPot /tmp/lsGUI/pot
 
       catch {repos_delete -obj $inpImg}
       catch {repos_delete -obj $distImg}
 
       img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-      itkutils_DistanceImage -src $inpImg -dst $distImg -thres $itklsGUIParams(gSigma1)
-      set rtnPot ->
-    } elseif { $itklsGUIParams(ShowEdgeImage) == "thres" } {
+      itkutils_DistanceImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeThres" } {
 
       set src $itklsGUIParams(edgeImage)
       set inpImg /img/$pathId/$posId/user
-      set potImg $rtnPot
 
       catch {repos_delete -obj $inpImg}
-      catch {repos_delete -obj $potImg}
+      catch {repos_delete -obj $rtnPot}
 
       img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-      itkutils_ThresholdImage -src $inpImg -dst $potImg -thres $itklsGUIParams(gSigma1)
-      set rtnPot ->
-
+      itkutils_ThresholdImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
       
     }
 
 
-   }
-
-  set src volume_image
-  catch {repos_delete -obj $rtnImg}
-  catch {repos_delete -obj junk}
-
-  img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
+  }
 
   lsGUIchangeFrame 0
 }
@@ -47623,6 +47677,52 @@ proc volGUIsetup { context} {
   global guiRIB
   set guiRIB(resample_voxel_size) [math_minVec $vdims]
 }
+
+
+proc volGUIUpdateImage { {value 0} } {
+
+  global gRen3dFreeze
+  global gRen3d
+  global guiVIB
+  set oldFreeze $gRen3dFreeze
+  set gRen3dFreeze 1
+  global gui3Dvars
+  global itklsGUIParams
+
+
+  set disp_img $guiVIB(img_show)
+
+  if { $disp_img == "userEdge" } {
+    set guiVIB(use_alt_image) 0
+    set guiVIB(repos_image_obj) 
+    set guiVIB(use_alt_image) 0
+    set imgobj $itklsGUIParams(edgeImage)
+    set cmap native
+    volGUIupdateVolRender guiVIB all
+    set guiVIB(repos_image_obj_alt) $imgobj
+    set guiVIB(use_alt_image) 1
+    set cmap native
+    set guiVIB(current_color_map) $guiVIB(color_map)
+
+  } else {
+    set guiVIB(use_alt_image) 0
+    set guiVIB(repos_image_obj) 
+    set guiVIB(use_alt_image) 0
+    set imgobj volume_image
+    set cmap 8-bit
+  }
+
+vis_img_VolImgBrwsr2 $imgobj vis_img_vol_browser
+
+set guiVIB(color_map) $cmap
+volGUIupdateColorMaps guiVIB
+volGUIupdateSlider guiVIB RL $guiVIB(sliderx_value)
+volGUIupdateSlider guiVIB AP $guiVIB(slidery_value)
+volGUIupdateSlider guiVIB SI $guiVIB(sliderz_value)
+set gRen3dFreeze oldFreeze
+vis_render $gRen3d
+
+} 
 
 
 # Procedure: volGUItoggleDisplaySlices
@@ -49914,6 +50014,7 @@ set {guiVIB(a_coord)} {0.0}
 set {guiVIB(ambientCoefficient)} {0.2}
 set {guiVIB(colorFunction)} {{0 0 0 0} {50 1 0 0} {200 1 1 1} {255 1 1 1}}
 set {guiVIB(color_map)} {8-bit}
+set {guiVIB(img_show)} {image}
 set {guiVIB(diffuseCoefficient)} {0.9}
 set {guiVIB(enableShading)} {0}
 set {guiVIB(gradientFunction)} {{0 1} {1 1}}

@@ -257,7 +257,7 @@ proc itkLSStg1 { } {
 		puts "normal segmenation"
 
 	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
-			puts "using norm edge image!"
+		puts "using norm edge image!"
 		  set src $itklsGUIParams(edgeImage)
 		  set inpImg /img/$pathId/$posId/user
 		  set distImg /img/$pathId/$posId/dist
@@ -287,6 +287,9 @@ proc itkLSStg1 { } {
 		  puts "using dist edge image!"
 	}
 	set lsres_unclean /lsGUI/$pathId/$posId/ls/unclean
+
+	lsGUIupdatePositionScale 
+	set $inImg /tmp/lsGUI/pot
 
 	set seedPd /tmp/lsGUI/seedPd
 	if {![repos_exists -obj $seedPd] } {
@@ -1055,6 +1058,7 @@ proc itk3dLSRun {img seedPd out} {
 	itk3dLS_updateEdgeImage 0
 
 }
+
 
 proc itk3dLS_updateEdgeImage {value} {
 
