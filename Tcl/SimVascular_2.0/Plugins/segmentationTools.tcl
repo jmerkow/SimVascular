@@ -982,7 +982,7 @@ proc seg_3DRenForScreen { } {
 }
 
 
-proc seg_takeScreenShots {{num 0}} {
+proc seg_takeScreenShots {{num 0 } {suffix "" }} {
   global gRen3d
   global CurrentRenderer
   set CurrentRenderer $gRen3d
@@ -1007,10 +1007,11 @@ proc seg_takeScreenShots {{num 0}} {
   }
   
   global gFilenames
-  set fn_base $gFilenames(generic_solid_file)
+  set fn_base $gFilenames(path_file)
   if {$fn_base == ""} return
-  set basename [file rootname $fn_base]
-  set fn $basename-$num.jpg
+  set basename [file tail [file rootname $fn_base]]
+  puts $basename
+  set fn [file join ./screens/ $basename-$suffix-$num.jpg]
   puts $fn
   RenderCameraView $widget 0 0
   Reset $widget 0 0
