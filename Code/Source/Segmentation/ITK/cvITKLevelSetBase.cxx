@@ -773,8 +773,15 @@ int cvITKLevelSetBase<TInputImage, TInternalPixelType>
 
 	cvITKLSUtil::vtk2itkRecastAndRescale<ITKInternalImageType,ITKExternalImageType>(m_cvInputImage->GetVtkStructuredPoints(),tempImg,
 			&InternalImgInfo);
-	cvITKLSUtil::WriteImage2(tempImg.GetPointer(),"inputimage.mha");
-	cvITKLSUtil::itkGenerateFeatureImage<ITKInternalImageType>(tempImg, m_itkFeatureImage, m_SigmaFeature);
+	
+	if (m_UseInputImageAsFeature)
+	{
+		cvITKLSUtil::itkGenerateFeatureImageNoGrad<ITKInternalImageType>(tempImg, m_itkFeatureImage, m_SigmaFeature);
+	}
+	else
+	{
+		cvITKLSUtil::itkGenerateFeatureImage<ITKInternalImageType>(tempImg, m_itkFeatureImage, m_SigmaFeature);
+	}
 
 	// Debug only, vtk image not used
 	cvITKLSUtil::itk2vtkRecastAndRescale<ITKInternalImageType,ITKExternalImageType>(m_itkFeatureImage,m_vtkFeatureImage,&ExternalImgInfo);

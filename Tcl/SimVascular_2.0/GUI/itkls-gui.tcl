@@ -1032,7 +1032,7 @@ proc itk3dLSSave { {value 0} } {
 	repos_writeXMLPolyData $segPd $fn
 }
 
-proc itk3dLSRun {img seedPd out} {
+proc itk3dLSRun {img seedPd out {edgeType "ratPoly"}} {
 	
 	set itklset /tmp/lsGUI/itk3dlset
 	if {![cmdExists $itklset]} {
@@ -1045,6 +1045,14 @@ proc itk3dLSRun {img seedPd out} {
 	foreach i [array names gui3Dvars] {
 			set $i $gui3Dvars($i)
 		}
+
+	if { $edgeType != "ratPoly"} {
+		$itklset SetUseInputImageAsFeature -input 1
+		puts "user edge segmenation"
+	} else {
+		puts "normal segmenation"
+	}
+		
 	#Common Params (probably)
 	$itklset SetMaxIterations -input $ls_ls_numiter
 	$itklset SetMaxRMSError -input 0

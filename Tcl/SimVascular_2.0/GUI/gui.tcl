@@ -28190,7 +28190,17 @@ proc gui3DrunLS {} {
     #lset_run $img $pot $initData $kt $klow $kupp  $serialInit $gridFactor $initOnly  $sparseFlag $isotropicFlag $expandFlag  $convFlag $timerFlag  $maxTSFlag $maxTS  $writeIntermediate  $runVpot $runVSmooth $runVConst $numVConst  $magGradFactor $pFactor  $rens $objPrefix $verbose  $stopV $rebuildPhiFreq $ac $acInterval $3d_curv $segPd $grid
     catch {repos_delete -obj $outPd}
     #jtm 3d levelset runs from here
-    itk3dLSRun $img $initPD $outPd
+
+
+    global itklsGUIParams
+
+
+    if { $itklsGUIParams(2DEdgeImage) == "userEdge"} {
+      set img $itklsGUIParams(edgeImage)
+      itk3dLSRun $img $initPD $outPd "userEdge"
+    } else {
+      itk3dLSRun $img $initPD $outPd
+    }
 
 
 

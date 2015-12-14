@@ -168,6 +168,9 @@ public:
 	cvSetMacro(Debug,bool);
 	cvGetMacro(Debug,bool);
 
+	cvSetMacro(UseInputImageAsFeature,bool);
+	cvGetMacro(UseInputImageAsFeature,bool);
+
 	cvSetMacro(UseNormalVectorCurvature,bool);
 	cvGetMacro(UseNormalVectorCurvature,bool);
 
@@ -269,6 +272,7 @@ private:
 	double m_SigmaAdvection;
 
 	//Level Set Advanced Parameters
+	bool m_UseInputImageAsFeature;
 	double m_MaxRMSError;
 	int m_MaxIterations;
 	double m_PropagationScaling;

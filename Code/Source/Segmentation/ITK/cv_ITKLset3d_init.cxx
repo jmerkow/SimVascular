@@ -115,6 +115,7 @@ CVTCLObjMemberSetPropertyMacro(itkls3d,cvITKLevelSetBase<ImageType>,UseNormalVec
 CVTCLObjMemberSetPropertyMacro(itkls3d,cvITKLevelSetBase<ImageType>,UseMeanCurvature,bool,BOOL_Type);
 CVTCLObjMemberSetPropertyMacro(itkls3d,cvITKLevelSetBase<ImageType>,UseMinimalCurvature,bool,BOOL_Type);
 CVTCLObjMemberSetPropertyMacro(itkls3d,cvITKLevelSetBase<ImageType>,BinarySeed,bool,BOOL_Type);
+CVTCLObjMemberSetPropertyMacro(itkls3d,cvITKLevelSetBase<ImageType>,UseInputImageAsFeature,bool,BOOL_Type);
 
 
 
@@ -182,6 +183,7 @@ int itkls3d_ObjectCmd( CXX_TCL_STDARGS )
 	CVTCLObjMethodInit(itkls3d,SetUseMeanCurvatureMtd,SetUseMeanCurvature)
 	CVTCLObjMethodInit(itkls3d,SetUseMinimalCurvatureMtd,SetUseMinimalCurvature)
 	CVTCLObjMethodInit(itkls3d,SetBinarySeedMtd,SetBinarySeed)
+	CVTCLObjMethodInit(itkls3d,SetUseInputImageAsFeatureMtd,SetUseInputImageAsFeature)
 
 	Tcl_AppendResult( interp, "\"", argv[1],
 			"\" not a recognized ITKLevelSet method", (char *)NULL );
