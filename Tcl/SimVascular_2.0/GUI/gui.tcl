@@ -3029,6 +3029,8 @@ img_guessVolParams $gImageVol(filename)}
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton1  -variable {itklsGUIParams(2DEdgeImage)}  -value {image}  -command {lsGUIupdatePositionScale}  -text {Image}
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton3  -variable {itklsGUIParams(2DEdgeImage)}  -value {LSEdge}  -command {lsGUIupdatePositionScale}  -text {LS Edge}
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton2  -variable {itklsGUIParams(2DEdgeImage)}  -value {userEdge}  -command {lsGUIupdatePositionScale}  -text {User Edge}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton4  -variable {itklsGUIParams(2DEdgeImage)}  -value {userEdgeThres}  -command {lsGUIupdatePositionScale}  -text {User Edge Thres}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton5  -variable {itklsGUIParams(2DEdgeImage)}  -value {userEdgeDistance}  -command {lsGUIupdatePositionScale}  -text {User Edge ThresDist}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7
   ttk::frame .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame7  -width {778}  -height {92}
@@ -3323,6 +3325,9 @@ img_guessVolParams $gImageVol(filename)}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton2
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton2  -variable {lsGUIthresholdType}  -value {grad}  -text {threshold potential}
+
+    # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton3
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton3  -variable {lsGUIthresholdType}  -value {userEdge}  -text {threshold user edge}
 
   # build widget .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.label65
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.label65  -font {Helvetica 10}  -borderwidth {0}
@@ -14838,6 +14843,8 @@ img_guessVolParams $gImageVol(filename)}
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton1 -fill x
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton2 -fill x
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton3 -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton4 -fill x
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.frame31.frame14.frame16.frame18.frame1.radiobutton5 -fill x
   ##--
 
 
@@ -15002,6 +15009,7 @@ img_guessVolParams $gImageVol(filename)}
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.label65  -expand 1  -fill both
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton1  -expand 1  -fill both
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton2  -expand 1  -fill both
+  pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton3  -expand 1  -fill both
   pack configure .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame0.radiobutton12  -expand 1  -fill both
 
   # pack master .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe2.frame24.frame9.frame64
@@ -46141,6 +46149,8 @@ proc lsGUIthrSlice {} {
   } elseif {$type == "grad"} {
     global lsGUIlsParams
     repos_importVtkPd -src [img_contour [repos_exportToVtk -src $pot] $lsGUIlsParams(potentialValueDecay)]  -dst $thr_unclean
+
+
   } else {
     puts "ERROR:  Invalid threshold type $type."
     return -code error "ERROR:  Invalid threshold type $type."
@@ -46591,10 +46601,13 @@ proc lsGUIupdatePositionScale { {value "0"}} {
       set rtnPot /tmp/lsGUI/pot
 
       catch {repos_delete -obj $inpImg}
+      catch {repos_delete -obj $rtnPot}
       catch {repos_delete -obj $distImg}
 
       img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
       itkutils_DistanceImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+
+
     } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeThres" } {
 
       set src $itklsGUIParams(edgeImage)
