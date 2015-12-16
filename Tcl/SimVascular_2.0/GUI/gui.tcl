@@ -4283,7 +4283,7 @@ img_guessVolParams $gImageVol(filename)}
 
   ttk::label .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.label16  -font {Helvetica 10}  -borderwidth {0}  -relief {flat}  -text {Use Edge}  -width {8}
   ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton13  -variable {itklsGUIParams(useEdgeImage)}  -value {0}  -text {Normal}  -width {11}
-  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton5  -variable {itklsGUIParams(useEdgeImage)}  -value {disp} -text {New}  -width {11}
+  ttk::radiobutton .guiCV.tframe3.tpanedwindow4.tframe6.tpanedwindow0.tframe2.frame2.frame3.notebook6.tframe9.panedwindow0.notebook0.tframe1.notebook0.tframe0.frame15.frame48.tlabelframe5.frame4.frame14.radiobutton5  -variable {itklsGUIParams(useEdgeImage)}  -value {disp} -text {Displayed}  -width {11}
 
   #-----------------
 
@@ -46551,78 +46551,80 @@ proc lsGUIupdatePositionScale { {value "0"}} {
   set rtnImg /tmp/lsGUI/mag
   set rtnPot /tmp/lsGUI/pot
 
-  catch {repos_delete -obj $rtnImg}
-  catch {repos_delete -obj $rtnPot}
-  catch {repos_delete -obj junk}
+  lsGUIMake2DImages $pathId $posId $rtnImg $rtnPot
 
-  #default
-  set src volume_image
-  img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
+  # catch {repos_delete -obj $rtnImg}
+  # catch {repos_delete -obj $rtnPot}
+  # catch {repos_delete -obj junk}
 
-
-  global itklsGUIParams
-  if {  ![info exists itklsGUIParams(2DEdgeImage)] } {
-    set itklsGUIParams(2DEdgeImage) image
-  }
+  # #default
+  # set src volume_image
+  # img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
 
 
-  set need_userEdge [string match userEdge* $itklsGUIParams(2DEdgeImage)]
-  puts $need_userEdge
+  # global itklsGUIParams
+  # if {  ![info exists itklsGUIParams(2DEdgeImage)] } {
+  #   set itklsGUIParams(2DEdgeImage) image
+  # }
 
-  if { $need_userEdge &&  [info exists itklsGUIParams(edgeImage)] == 0} {
 
-  } else {
+  # set need_userEdge [string match userEdge* $itklsGUIParams(2DEdgeImage)]
+  # puts $need_userEdge
+
+  # if { $need_userEdge &&  [info exists itklsGUIParams(edgeImage)] == 0} {
+
+  # } else {
     
-    if { $itklsGUIParams(2DEdgeImage) == "userEdge"} {
-      set src $itklsGUIParams(edgeImage)
-      set rtnPot /tmp/lsGUI/pot
-      img_getSliceAtPathPoint $src $path $posId $ext $rtnPot ->
+  #   if { $itklsGUIParams(2DEdgeImage) == "userEdge"} {
+  #     set src $itklsGUIParams(edgeImage)
+  #     set rtnPot /tmp/lsGUI/pot
+  #     img_getSliceAtPathPoint $src $path $posId $ext $rtnPot ->
 
-    } elseif { $itklsGUIParams(2DEdgeImage) == "LSEdge"} {
+  #   } elseif { $itklsGUIParams(2DEdgeImage) == "LSEdge"} {
 
-      switch -exact $itklsGUIParams(showPot) {
-        Stg1 {
-            catch {repos_delete -obj $rtnPot}
-          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
-          -sigma $itklsGUIParams(gSigma1)
-        }
-        Stg2 {
-            catch {repos_delete -obj $rtnPot}
-          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
-          -sigma $itklsGUIParams(gSigma2)
-        }
-        Default {
-        }
-      }
-    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeDistance" } {
+  #     switch -exact $itklsGUIParams(showPot) {
+  #       Stg1 {
+  #           catch {repos_delete -obj $rtnPot}
+  #         itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+  #         -sigma $itklsGUIParams(gSigma1)
+  #       }
+  #       Stg2 {
+  #           catch {repos_delete -obj $rtnPot}
+  #         itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+  #         -sigma $itklsGUIParams(gSigma2)
+  #       }
+  #       Default {
+  #       }
+  #     }
+  #   } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeDistance" } {
 
-      set src $itklsGUIParams(edgeImage)
-      set inpImg /img/$pathId/$posId/user
-      set rtnPot /tmp/lsGUI/pot
+  #     set src $itklsGUIParams(edgeImage)
+  #     set inpImg /img/$pathId/$posId/user
+  #     set rtnPot /tmp/lsGUI/pot
 
-      catch {repos_delete -obj $inpImg}
-      catch {repos_delete -obj $rtnPot}
-      catch {repos_delete -obj $distImg}
+  #     catch {repos_delete -obj $inpImg}
+  #     catch {repos_delete -obj $rtnPot}
+  #     catch {repos_delete -obj $distImg}
 
-      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-      itkutils_DistanceImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+  #     img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+  #     itkutils_DistanceImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
 
 
-    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeThres" } {
+  #   } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeThres" } {
 
-      set src $itklsGUIParams(edgeImage)
-      set inpImg /img/$pathId/$posId/user
+  #     set src $itklsGUIParams(edgeImage)
+  #     set inpImg /img/$pathId/$posId/user
 
-      catch {repos_delete -obj $inpImg}
-      catch {repos_delete -obj $rtnPot}
+  #     catch {repos_delete -obj $inpImg}
+  #     catch {repos_delete -obj $rtnPot}
 
-      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-      itkutils_ThresholdImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+  #     img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+  #     itkutils_ThresholdImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
       
-    }
+  #   }
 
 
-  }
+  # }
 
   lsGUIchangeFrame 0
 }

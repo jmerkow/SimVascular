@@ -25,6 +25,89 @@
 # THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+proc lsGUIMake2DImages { pathId posId {rtnImg /tmp/lsGUI/mag } { rtnPot /tmp/lsGUI/pot } } {
+
+  global gPathPoints
+  set path $gPathPoints($pathId,splinePts)
+
+  global gOptions
+  set ext $gOptions(resliceDims)
+
+  catch {repos_delete -obj $rtnImg}
+  catch {repos_delete -obj $rtnPot}
+  catch {repos_delete -obj junk}
+
+  #default
+  set src volume_image
+  img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
+
+
+  global itklsGUIParams
+  if {  ![info exists itklsGUIParams(2DEdgeImage)] } {
+    set itklsGUIParams(2DEdgeImage) image
+  }
+
+  puts " itklsGUIParams(2DEdgeImage) $itklsGUIParams(2DEdgeImage)"
+
+  set need_userEdge [string match userEdge* $itklsGUIParams(2DEdgeImage)]
+  puts $need_userEdge
+
+  if { $need_userEdge &&  [info exists itklsGUIParams(edgeImage)] == 0} {
+
+  } else {
+    
+    if { $itklsGUIParams(2DEdgeImage) == "userEdge"} {
+      set src $itklsGUIParams(edgeImage)
+      img_getSliceAtPathPoint $src $path $posId $ext $rtnPot ->
+
+    } elseif { $itklsGUIParams(2DEdgeImage) == "LSEdge"} {
+
+      switch -exact $itklsGUIParams(showPot) {
+        Stg1 {
+            catch {repos_delete -obj $rtnPot}
+          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+          -sigma $itklsGUIParams(gSigma1)
+        }
+        Stg2 {
+            catch {repos_delete -obj $rtnPot}
+          itkutils_GradientMagnitudeGaussian -src $rtnImg -dst $rtnPot \
+          -sigma $itklsGUIParams(gSigma2)
+        }
+        Default {
+        }
+      }
+    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeDistance" } {
+
+      set src $itklsGUIParams(edgeImage)
+      set inpImg /img/$pathId/$posId/user
+
+      puts "userEdgeDistance"
+      catch {repos_delete -obj $inpImg}
+      catch {repos_delete -obj $rtnPot}
+      catch {repos_delete -obj $distImg}
+
+      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+      itkutils_DistanceImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+
+
+    } elseif { $itklsGUIParams(2DEdgeImage) == "userEdgeThres" } {
+
+      set src $itklsGUIParams(edgeImage)
+      set inpImg /img/$pathId/$posId/user
+
+      catch {repos_delete -obj $inpImg}
+      catch {repos_delete -obj $rtnPot}
+      puts "userEdgeThres"
+      img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+      itkutils_ThresholdImage -src $inpImg -dst $rtnPot -thres $itklsGUIParams(gSigma1)
+    }
+  }
+  puts "rtnPot $rtnPot"
+
+
+}
+
+
 proc itklsDo { value} {
 	global itklsGUIParams
 	#itklsChangeFrame 0
@@ -362,34 +445,6 @@ proc itkLSStg2 { } {
 		$itklset SetUseInputImageAsFeature -input 1
 
 
-	} elseif { $itklsGUIParams(useEdgeImage) == "1"} {
-
-		  set src $itklsGUIParams(edgeImage)
-		  set inpImg /img/$pathId/$posId/user
-		  set distImg /img/$pathId/$posId/dist
-
-		  catch {repos_delete -obj $inpImg}
-		  catch {repos_delete -obj $distImg}
-
-		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-		  set inImg $inpImg
-		  $itklset SetUseInputImageAsFeature -input 1
-		  puts "using norm edge image!"
-	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
-
-		  set src $itklsGUIParams(edgeImage)
-		  set inpImg /img/$pathId/$posId/user
-		  set distImg /img/$pathId/$posId/dist
-
-		  catch {repos_delete -obj $inpImg}
-		  catch {repos_delete -obj $distImg}
-
-		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-		  itkutils_DistanceImage -src $inpImg -dst $distImg -thres $gSigma1
-		  
-		  set inImg $distImg
-		  $itklset SetUseInputImageAsFeature -input 1
-		  puts "using dist edge image!"
 	}
 
 	set lsres_unclean /lsGUI/$pathId/$posId/ls/unclean
@@ -773,56 +828,57 @@ proc itkLSOnPos {pathId posId} {
 
 	set rtnImg /img/$pathId/$posId/mag
 	set rtnPot /img/$pathId/$posId/pot
-	catch {repos_delete -obj $rtnImg}
-	catch {repos_delete -obj $rtnPot}
-	img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
 
-	if { $itklsGUIParams(useEdgeImage) == "0"} {
-		puts "normal segmenation"
-	} elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
+	lsGUIMake2DImages $pathId $posId $rtnImg $rtnPot
 
-			set src $itklsGUIParams(edgeImage)
-		  set inpImg /tmp/lsGUI/user
-		  set potImg /img/$pathId/$posId/mag
+	# img_getSliceAtPathPoint $src $path $posId $ext $rtnImg $rtnPot
 
-		  catch {repos_delete -obj $potImg}
-		  catch {repos_delete -obj $inpImg}
+	# if { $itklsGUIParams(useEdgeImage) == "0"} {
+	# 	puts "normal segmenation"
+	# } elseif { $itklsGUIParams(useEdgeImage) == "distance"} {
 
-		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
-		  itkutils_DistanceImage -src $inpImg -dst $potImg -thres $itklsGUIParams(gSigma1)
+	# 		set src $itklsGUIParams(edgeImage)
+	# 	  set inpImg /tmp/lsGUI/user
+	# 	  set potImg /img/$pathId/$posId/mag
 
-	} elseif { $itklsGUIParams(useEdgeImage) == "blur"} {
-		if { [repos_exists -obj $itklsGUIParams(edgeImage)] != "0"} {
-			global gOptions
-  		set ext $gOptions(resliceDims)
-  		set src $itklsGUIParams(edgeImage)
+	# 	  catch {repos_delete -obj $potImg}
+	# 	  catch {repos_delete -obj $inpImg}
 
-		  set inpImg /tmp/lsGUI/user
-		  set potImg /img/$pathId/$posId/mag
+	# 	  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+	# 	  itkutils_DistanceImage -src $inpImg -dst $potImg -thres $itklsGUIParams(gSigma1)
 
-		  catch {repos_delete -obj $potImg}
-		  catch {repos_delete -obj $inpImg}
+	# } elseif { $itklsGUIParams(useEdgeImage) == "blur"} {
+	# 	if { [repos_exists -obj $itklsGUIParams(edgeImage)] != "0"} {
+	# 		global gOptions
+ #  		set ext $gOptions(resliceDims)
+ #  		set src $itklsGUIParams(edgeImage)
 
-		  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+	# 	  set inpImg /tmp/lsGUI/user
+	# 	  set potImg /img/$pathId/$posId/mag
 
-			switch -exact $itklsGUIParams(showPot) {
-				Stg1 {
-					itkutils_GaussianBlur -src $inpImg -dst $potImg \
-					-sigma $itklsGUIParams(gSigma1)
-				}
-				Stg2 {
-					itkutils_GaussianBlur -src $inpImg -dst $potImg \
-					-sigma $itklsGUIParams(gSigma2)
-				}
-				Default {
-					itkutils_GaussianBlur -src $inpImg -dst $potImg \
-					-sigma 0
-				}
-			}
-		} else {
-			puts "No edge Image!"
-		}
-	}
+	# 	  catch {repos_delete -obj $potImg}
+	# 	  catch {repos_delete -obj $inpImg}
+
+	# 	  img_getSliceAtPathPoint $src $path $posId $ext $inpImg ->
+
+	# 		switch -exact $itklsGUIParams(showPot) {
+	# 			Stg1 {
+	# 				itkutils_GaussianBlur -src $inpImg -dst $potImg \
+	# 				-sigma $itklsGUIParams(gSigma1)
+	# 			}
+	# 			Stg2 {
+	# 				itkutils_GaussianBlur -src $inpImg -dst $potImg \
+	# 				-sigma $itklsGUIParams(gSigma2)
+	# 			}
+	# 			Default {
+	# 				itkutils_GaussianBlur -src $inpImg -dst $potImg \
+	# 				-sigma 0
+	# 			}
+	# 		}
+	# 	} else {
+	# 		puts "No edge Image!"
+	# 	}
+	# }
 
 
 	if { [array exists params] } {
@@ -849,7 +905,7 @@ proc itkLSOnPos {pathId posId} {
 	puts "doing segmentation"
 	set lsres /lsGUI/$pathId/$posId/ls
 	catch {repos_delete -obj $lsres}
-	itkLSOnImage $rtnImg $lsres [array get params]
+	itkLSOnImage $rtnImg $rtnPot $lsres [array get params]
 
 	# orient profile
 	set path $gPathPoints($pathId,splinePts)
@@ -864,7 +920,7 @@ proc itkLSOnPos {pathId posId} {
 	geom_orientProfile -src $lsres -path_pos $pos -path_tan $nrm -path_xhat $xhat -dst $lsoriented
 }	
 
-proc itkLSOnImage {img lsres paramsstr} {
+proc itkLSOnImage {img pot lsres paramsstr} {
 
 	array set params $paramsstr
 	foreach i [array names params] {
@@ -887,29 +943,26 @@ proc itkLSOnImage {img lsres paramsstr} {
 		ITKLevelSet2D $itklset
 	}
 	$itklset SetDebug -input 0
-	set magImg $img
-
-	$itklset SetMaxIterations -input $maxIter1
-	$itklset SetMaxRMSError -input $maxErr1
-	$itklset SetAdvectionScaling -input 1
-	$itklset SetCurvatureScaling -input 1
-	$itklset SetInputs -image $magImg -seed $seedPd
-
-	$itklset SetMaxIterations -input $maxIter1
-	$itklset SetMaxRMSError -input $maxErr1
-	$itklset SetAdvectionScaling -input 1
-	$itklset SetCurvatureScaling -input 1
-	$itklset SetInputs -image $magImg -seed $seedPd
 
 	if { $useEdgeImage == "0"} {
-		#set magImg /tmp/lsGUI/mag
-		$itklset SetUseInputImageAsFeature -input 0
-	} else {
-		$itklset SetUseInputImageAsFeature -input 1
-		puts "using edge image!"
-	}
+        set magImg $img
+        $itklset SetUseInputImageAsFeature -input 0
+        puts "normal segmenation"
+    } elseif { $useEdgeImage == "disp"} {
+
+        set magImg $pot
+        $itklset SetUseInputImageAsFeature -input 1
+    }
+
+	$itklset SetMaxIterations -input $maxIter1
+	$itklset SetMaxRMSError -input $maxErr1
+	$itklset SetAdvectionScaling -input 1
+	$itklset SetCurvatureScaling -input 1
+	$itklset SetInputs -image $magImg -seed $seedPd
+
 
 	puts "performing stage one levelset"
+	puts "$magImg"
 	$itklset PhaseOneLevelSet -Kc $kThr -expRising $expRise -expFalling $expFall -sigmaFeat $gSigma1 -sigmaAdv $advSigma1
 
 	puts "extracting stage 1 into $lsres_unclean"
@@ -922,11 +975,15 @@ proc itkLSOnImage {img lsres paramsstr} {
 	}
 
 	if { $useEdgeImage == "0"} {
-		$itklset2 SetUseInputImageAsFeature -input 0
-	} else {
-		$itklset2 SetUseInputImageAsFeature -input 1
-		puts "using edge image!"
-	}
+        set magImg $img
+        $itklset2 SetUseInputImageAsFeature -input 0
+        puts "normal segmenation"
+    } elseif { $useEdgeImage == "disp"} {
+    	puts "disp segmenation"
+        # set itklsGUIParams(useEdgeImage) "disp"
+        set magImg $pot
+        $itklset2 SetUseInputImageAsFeature -input 1
+    }
 
 
 	$itklset2 SetMaxIterations -input $maxIter2
@@ -974,6 +1031,7 @@ proc itkLSDoBatch {pathId posList groupName} {
 		set posId [lindex $posList $idx]
 		global lsGUIcurrentPositionNumber
 		set lsGUIcurrentPositionNumber $posId
+
 		itkLSOnPos $pathId $posId
 		set seg /lsGUI/$pathId/$posId/ls/oriented
 
