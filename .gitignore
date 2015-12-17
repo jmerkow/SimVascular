@@ -1,4 +1,5 @@
 .project
+build/*
 Tcl/.buildpath
 Tcl/.project
 Code/FlowSolvers/.cproject
