@@ -620,8 +620,8 @@ for {set idx 0} {$idx < [llength $posList]} {incr idx 1} {
 
 
 #   repos_writeVtkStructuredPoints -obj $rtnImg -type ascii -file $posId.vtk
-    seg_writeTiff $rtnImg ./$pathId/
-    seg_writeTiff $rtnPot ./$pathId/
+    seg_writeTIFF $rtnImg ./$pathId/
+    seg_writeTIFF $rtnPot ./$pathId/
 
     }
 
@@ -921,7 +921,8 @@ proc seg_writeTIFF {img filename {rescale 0} {usestat 0} } {
   }
 
   vtkTIFFWriter writer
-  writer SetFileName $ffname 
+  #writer SetFileName $ffname
+  writer SetFileName $filename 
   writer SetInputData [caster GetOutput]
   writer Write
 
