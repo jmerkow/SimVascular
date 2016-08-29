@@ -595,7 +595,7 @@ proc seg_getPDSliceAtPathPoint {{value 0} } {
 }
 
 
-proc seg_writeSliceTiff {pathId posList {src volume_image} {path .} } {
+proc seg_writeSliceTiff {pathId posList {src volume_image} {topdir .} } {
 
 global gPathPoints
 
@@ -620,8 +620,9 @@ for {set idx 0} {$idx < [llength $posList]} {incr idx 1} {
 
 
 #   repos_writeVtkStructuredPoints -obj $rtnImg -type ascii -file $posId.vtk
-    seg_writeTIFF $rtnImg ./$pathId/
-    seg_writeTIFF $rtnPot ./$pathId/
+    file mkdir [file normalize $topdir/$pathId]
+    seg_writeTIFF $rtnImg $topdir/$pathId/$posId 0 0 mag
+    seg_writeTIFF $rtnPot $topdir/$pathId/$posId 0 0 pot
 
     }
 
@@ -884,9 +885,10 @@ proc seg_writeSliceSegEdgeTIFF {pathId posList {fnamebase tmp} {pathfn .} } {
 
 
 
-proc seg_writeTIFF {img filename {rescale 0} {usestat 0} } {
+proc seg_writeTIFF {img filename {rescale 0} {usestat 0} {name unnamed}} {
       
-  set directory [file path $filename]
+  set directory [file normalize $filename]
+  puts $directory
   file mkdir $directory
 
   catch {stat Delete}
@@ -922,7 +924,8 @@ proc seg_writeTIFF {img filename {rescale 0} {usestat 0} } {
 
   vtkTIFFWriter writer
   #writer SetFileName $ffname
-  writer SetFileName $filename 
+  #writer SetFileName $filename
+  writer SetFileName $directory/$name 
   writer SetInputData [caster GetOutput]
   writer Write
 
